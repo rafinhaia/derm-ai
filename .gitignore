@@ -1,28 +1,14 @@
-# Python
+# Ambiente virtual
+venv/
+
+# Cache python
 __pycache__/
 *.pyc
-*.pyo
 
-# Environment
-.env
-
-# Virtual environment
-venv/
-.venv/
-
-# Streamlit
-.streamlit/
-
-# Data files
-data/
-
-# Logs
+# arquivos temporários
 *.log
+*.tmp
 
-# IDE
-.vscode/
-.idea/
-
-# OS
+# arquivos do sistema
 .DS_Store
 Thumbs.db

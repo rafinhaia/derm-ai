@@ -1,0 +1,70 @@
+**1. Prontuário Dermatológico Estruturado**
+
+**Identificação:**
+- Nome: Bruno Alves
+- Data da consulta: [Data da consulta]
+- Sexo/Idade: [Preencher]
+- Queixa principal: Lesão em região de raiz nasal
+
+**História da Doença Atual:**
+- Paciente relata surgimento de lesão em região de raiz nasal (descrever duração, evolução, sintomas locais como dor, prurido, sangramento, mudança de cor/textura, se presentes).
+- Descrever se há história prévia de lesões similares, tratamentos prévios realizados, e resposta.
+
+**Antecedentes Pessoais:**
+- História familiar de câncer de pele, outras neoplasias, doenças dermatológicas.
+- Exposição solar importante, uso de protetor solar, fototipo.
+- Comorbidades: [Preencher se relatadas]
+- Medicamentos em uso: [Preencher se relatados]
+- Alergias: [Preencher se relatadas]
+
+**Exame Dermatológico:**
+- Localização: Região de raiz nasal
+- Descrição da lesão: [Descrever morfologia, bordas, coloração, tamanho, superfície, presença de ulceração, infiltração, sangramento]
+- Demais áreas: [relatar se há outras lesões suspeitas]
+
+**Procedimento Hoje:**
+- Realizada biópsia incisional da lesão em região de raiz nasal.
+
+---
+
+**2. Diagnóstico Provável**
+- Neoplasia cutânea (lesão maligna ou pré-maligna), sendo as principais hipóteses:
+  - Carcinoma Basocelular (CBC)
+
+---
+
+**3. Diagnósticos Diferenciais**
+- Carcinoma espinocelular (CEC)
+- Ceratose actínica (se lesão for pequena e eritematosa)
+- Melanoma (menos comum na raiz nasal, mas deve ser sempre considerado)
+- Queratoacantoma
+- Molusco fibroso (dermatofibroma)
+- Lesão benigna (nevo, cisto epidérmico)
+- Histiocitoma
+
+---
+
+**4. Sugestão de Exames Complementares**
+- Exame histopatológico da biópsia incisional (já colhida)
+- Imunohistoquímica, se necessário, para esclarecimento diagnóstico (em casos duvidosos)
+- Dermatoscopia (caso não realizada previamente)
+- Avaliação de linfonodos regionais, se suspeita de malignidade agressiva/CEC avançado
+- Tomografia computadorizada/facial em casos de suspeita de invasão profunda (apenas se indicado pelo histopatológico)
+
+---
+
+**5. Conduta Terapêutica Inicial Baseada em Evidências**
+- Aguardar resultado do exame histopatológico para confirmação diagnóstica.
+- Orientar proteção solar rigorosa e cuidados locais com o curativo da biópsia.
+- Se confirmado carcinoma basocelular:
+  - Eletrodissecção e curetagem, excisão cirúrgica com margens adequadas, ou cirurgia micrográfica de Mohs (em casos selecionados e áreas nobres/face).
+  - Casos superficiais: opção por imiquimode ou 5-fluoracil tópico (analisar indicação).
+- Se CEC: excisão cirúrgica com margens oncológicas adequadas. Avaliação de linfonodos regionais.
+- Caso melanoma: excisão com margens ajustadas conforme Breslow; estadiamento.
+- Reavaliar paciente com resultado anatomopatológico para definição terapêutica definitiva.
+- Encaminhamento para cirurgião plástico se necessária reconstrução/reparo da área.
+- Educação do paciente sobre sinais de alerta e necessidade de acompanhamento dermatológico regular.
+
+**Observação:** Conduta definitiva depende do laudo histopatológico.
+
+Se desejar detalhar os sintomas ou características da lesão ficarei feliz em orientar com mais precisão!
