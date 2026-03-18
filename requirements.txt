@@ -8,3 +8,4 @@ pandas
 reportlab
 python-dotenv
 requests
+SpeechRecognition
