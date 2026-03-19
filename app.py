@@ -18,7 +18,7 @@ from src.patient_report import gerar_laudo_paciente
 
 
 # ----------------------------
-# BANCO DE DADOS
+# BANCO
 # ----------------------------
 
 def conectar_db():
@@ -28,15 +28,6 @@ def criar_tabelas():
 
     conn = conectar_db()
     cursor = conn.cursor()
-
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS patients (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT,
-        sexo TEXT,
-        data_nascimento TEXT
-    )
-    """)
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS consultas (
@@ -53,6 +44,10 @@ def criar_tabelas():
 
 criar_tabelas()
 
+
+# ----------------------------
+# SALVAR CONSULTA
+# ----------------------------
 
 def salvar_consulta(nome, transcricao, analise):
 
@@ -74,6 +69,8 @@ def salvar_consulta(nome, transcricao, analise):
 
 
 # ----------------------------
+# APP
+# ----------------------------
 
 st.set_page_config(page_title="Derm AI Copilot", layout="wide")
 
@@ -94,9 +91,6 @@ if "patient_name" not in st.session_state:
 if "patient_sex" not in st.session_state:
     st.session_state.patient_sex = ""
 
-if "patient_dob" not in st.session_state:
-    st.session_state.patient_dob = None
-
 if "patient_age" not in st.session_state:
     st.session_state.patient_age = ""
 
@@ -108,22 +102,6 @@ if "analise_total" not in st.session_state:
 
 if "camera_ativa" not in st.session_state:
     st.session_state.camera_ativa = False
-
-
-# ----------------------------
-# LIMPAR TEXTO
-# ----------------------------
-
-def limpar_texto(texto):
-
-    texto = texto.replace("*", "")
-    texto = texto.replace("Identificação:", "")
-
-    texto = re.sub(r"Nome:.*não informado.*", "", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"Sexo:.*não informado.*", "", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"Idade:.*não informado.*", "", texto, flags=re.IGNORECASE)
-
-    return texto.strip()
 
 
 # ----------------------------
@@ -142,7 +120,7 @@ def calcular_idade(data_nascimento):
 
 
 # ----------------------------
-# GERAR PDF
+# PDF
 # ----------------------------
 
 def gerar_pdf():
@@ -152,14 +130,12 @@ def gerar_pdf():
     c = canvas.Canvas(arquivo, pagesize=A4)
 
     largura, altura = A4
-
     y = altura - 50
 
     c.setFont("Helvetica-Bold", 18)
     c.drawString(50, y, "RELATÓRIO MÉDICO")
 
     y -= 40
-
     c.setFont("Helvetica", 12)
 
     c.drawString(50, y, f"Paciente: {st.session_state.patient_name}")
@@ -171,14 +147,9 @@ def gerar_pdf():
     c.drawString(50, y, f"Idade: {st.session_state.patient_age}")
     y -= 20
 
-    c.drawString(50, y, f"Data da consulta: {date.today().strftime('%d/%m/%Y')}")
-
-    y -= 40
-
     for linha in st.session_state.analise_total.split("\n"):
 
         c.drawString(50, y, linha[:95])
-
         y -= 15
 
         if y < 120:
@@ -191,7 +162,7 @@ def gerar_pdf():
 
 
 # ----------------------------
-# FORMULÁRIO PACIENTE
+# NOVO PACIENTE
 # ----------------------------
 
 if not st.session_state.patient_started:
@@ -205,25 +176,28 @@ if not st.session_state.patient_started:
         ["Masculino", "Feminino", "Outro"]
     )
 
+    if "patient_dob" not in st.session_state:
+        st.session_state.patient_dob = None
+
     dob = st.date_input(
         "Data de nascimento",
+        value=st.session_state.patient_dob,
         min_value=date(1900,1,1),
         max_value=date.today()
     )
 
+    st.session_state.patient_dob = dob
+
     idade = None
 
     if dob:
-
         idade = calcular_idade(dob)
-
         st.write(f"Idade: {idade} anos")
 
     if st.button("Iniciar consulta"):
 
         st.session_state.patient_name = nome
         st.session_state.patient_sex = sexo
-        st.session_state.patient_dob = dob
         st.session_state.patient_age = idade
         st.session_state.patient_started = True
 
@@ -268,41 +242,20 @@ if audio:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
 
         temp_audio.write(audio["bytes"])
-
         audio_path = temp_audio.name
 
     texto = transcrever_audio(audio_path)
 
     st.session_state.transcricao_total += "\n\n" + texto
 
-    contexto_paciente = f"""
-Paciente: {st.session_state.patient_name}
-Sexo: {st.session_state.patient_sex}
-Idade: {st.session_state.patient_age}
-Data da consulta: {date.today().strftime('%d/%m/%Y')}
-"""
-
-    texto_completo = contexto_paciente + "\n\n" + st.session_state.transcricao_total
+    texto_completo = st.session_state.transcricao_total
 
     analise = analisar_consulta(texto_completo)
 
-    analise = limpar_texto(analise)
+    # remove asteriscos gerados pela IA
+    analise = analise.replace("*", "")
 
-    cabecalho = f"""
-Prontuário médico
-
-- Paciente: {st.session_state.patient_name}
-- Sexo: {st.session_state.patient_sex}
-- Idade: {st.session_state.patient_age}
-- Data da consulta: {date.today().strftime('%d/%m/%Y')}
-
-"""
-
-    st.session_state.analise_total = cabecalho + analise
-
-    # ----------------------------
-    # SALVAR CONSULTA NO BANCO
-    # ----------------------------
+    st.session_state.analise_total = analise
 
     salvar_consulta(
         st.session_state.patient_name,
@@ -324,6 +277,27 @@ if st.session_state.analise_total:
     st.code(st.session_state.analise_total)
 
 
+# ----------------------------
+# HISTÓRICO
+# ----------------------------
+
+st.divider()
+st.header("Histórico de consultas")
+
+conn = conectar_db()
+cursor = conn.cursor()
+
+cursor.execute("""
+SELECT patient_name, data_consulta
+FROM consultas
+ORDER BY id DESC
+LIMIT 20
+""")
+
+consultas = cursor.fetchall()
+
+for c in consultas:
+    st.write(f"{c[0]} - {c[1]}")
 # ----------------------------
 # SOLICITAR BIÓPSIA
 # ----------------------------
@@ -379,28 +353,6 @@ if laudo:
 
 
 # ----------------------------
-# FINALIZAR CONSULTA
-# ----------------------------
-
-st.divider()
-
-st.header("Finalizar consulta")
-
-if st.button("Gerar PDF médico"):
-
-    pdf = gerar_pdf()
-
-    with open(pdf, "rb") as file:
-
-        st.download_button(
-            label="Baixar PDF",
-            data=file,
-            file_name="consulta_medica.pdf",
-            mime="application/pdf"
-        )
-
-
-# ----------------------------
 # IMAGEM DERMATOLÓGICA
 # ----------------------------
 
@@ -410,7 +362,7 @@ st.header("Imagem dermatológica")
 
 imagem = st.file_uploader(
     "Upload da imagem",
-    type=["jpg","jpeg","png"]
+    type=["jpg", "jpeg", "png"]
 )
 
 if st.button("Usar câmera"):
@@ -448,26 +400,3 @@ if imagem:
         abcd = analisar_abcd(img_path)
 
         st.write("Score ABCD:", abcd["score"])
-
-
-# ----------------------------
-# HISTÓRICO DE CONSULTAS
-# ----------------------------
-
-st.divider()
-st.header("Histórico de consultas")
-
-conn = conectar_db()
-cursor = conn.cursor()
-
-cursor.execute("""
-SELECT patient_name, data_consulta
-FROM consultas
-ORDER BY id DESC
-LIMIT 20
-""")
-
-consultas = cursor.fetchall()
-
-for c in consultas:
-    st.write(f"{c[0]} - {c[1]}")
