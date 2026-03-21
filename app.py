@@ -378,3 +378,6 @@ if imagem:
         abcd = analisar_abcd(img_path)
 
         st.write("Score ABCD:", abcd["score"])
+from src.chat_assistant import render_chat
+
+render_chat()
