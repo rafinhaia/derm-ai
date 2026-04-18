@@ -11,7 +11,7 @@ if not st.session_state.logged_in:
     senha = st.text_input("Senha", type="password")
 
     if st.button("Entrar"):
-        if senha == "123456":
+        if senha == "654321":
             st.session_state.logged_in = True
             st.rerun()
         else:
